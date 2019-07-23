@@ -1,4 +1,5 @@
 #include <Wire.h>
+#include <Math.h>
 #include <Servo.h>
 #include "sht31.h"
 #include "led.h"
@@ -25,7 +26,6 @@ WaterCover waterCover;
 bool dataFromHostIsReady;
 bool isSht31Error;
 bool paused;
-//int coverState = LOW;
 
 float targetTemperature;
 float currentTemperature;
@@ -39,8 +39,8 @@ int power;
 void sendCurrentState() {
   current.reset();
   current.type = GetCurrentState;
-  current.setInt16Value((int)(currentTemperature * 100));
-  current.setInt16Value((int)(targetTemperature * 100));
+  current.setInt16Value((int)(round(currentTemperature * 100)));
+  current.setInt16Value((int)(round(targetTemperature * 100)));
   current.setInt16Value(currentHumidity);
   current.setInt16Value(targetHumidity);
   current.setByteValue(currentTrayPosition);
