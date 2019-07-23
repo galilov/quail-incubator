@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Инкубатор</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            height: 400px;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        #container {
+            /*width:100%;*/
+            float: left;
+            clear: none;
+        }
+
+        #left {
+            float: left;
+        }
+
+        #right {
+            float: right;
+        }
+    </style>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script>
+        function getData() {
+            $.getJSON("data.json")
+                .done(function (data) {
+                    console.log("success");
+                    console.log(data);
+                    $("#currTemperature").text(data.CurrTemperature);
+                    $("#tgTemperature").text(data.TargetTemperature);
+                    $("#currHumidity").text(data.CurrentHumidity);
+                    $("#tgHumidity").text(data.TargetHumidity);
+                    $("#currHeating").text(data.Power);
+                    $("#currHumidifierCover").text(data.HumidifierCover === "O" ? "Open" : "Closed");
+                    $("#currTrayPosition").text(data.CurrentTrayPosition === "R" ? "Right" : (data.CurrentTrayPosition === "L" ? "Left" : "Neutral"));
+                    $("#tgTime").text(data.TargetHumidity);
+                    $("#currTime").text(data.HourOfIncubation);
+                    $("#currError").text(data.Error === "E" ? "Error" : "OK");
+                })
+                .fail(function () {
+                    console.log("error");
+                })
+                .always(function () {
+                    console.log("complete");
+                    setTimeout(function () { getData(); }, 5000);
+                });
+
+        }
+    </script>
+</head>
+<body onload="getData();">
+    <div id="container">
+        <div id="left"><img src="bird.jpg" width="489" height="400" /></div>
+        <div id="right">
+            <table border="1">
+                <tr>
+                    <th>Param</th>
+                    <th>Target</th>
+                    <th>Current</th>
+                    <th>Unit</th>
+                </tr>
+                <tr>
+                    <td>Temperature</td>
+                    <td>
+                        <div id="tgTemperature"></div>
+                    </td>
+                    <td>
+                        <div id="currTemperature"></div>
+                    </td>
+                    <td>C</td>
+                </tr>
+                <tr>
+                    <td>Humidity</td>
+                    <td>
+                        <div id="tgHumidity"></div>
+                    </td>
+                    <td>
+                        <div id="currHumidity"></div>
+                    </td>
+                    <td>%</td>
+                </tr>
+                <tr>
+                    <td>Heating (PID)</td>
+                    <td>-</td>
+                    <td>
+                        <div id="currHeating"></div>
+                    </td>
+                    <td>%, PWM</td>
+                </tr>
+                <tr>
+                    <td>Humidifier cover</td>
+                    <td>-</td>
+                    <td>
+                        <div id="currHumidifierCover"></div>
+                    </td>
+                    <td>Open/Closed</td>
+                </tr>
+                <tr>
+                    <td>Tray position</td>
+                    <td>-</td>
+                    <td>
+                        <div id="currTrayPosition"></div>
+                    </td>
+                    <td>Left/Right/Neutral</td>
+                </tr>
+                <tr>
+                    <td>Hours of incubation</td>
+                    <td>
+                        <div>408</div>
+                    </td>
+                    <td>
+                        <div id="currTime"></div>
+                    </td>
+                    <td>Hours</td>
+                </tr>
+                <tr>
+                    <td>Error status</td>
+                    <td>-</td>
+                    <td>
+                        <div id="currError"></div>
+                    </td>
+                    <td>Error/OK</td>
+                </tr>
+            </table>
+        </div>
+        <div style="clear:both; font-size:1px;"></div>
+        <a href="https://youtu.be/PIFHD7nneGQ" target="_blank">LIVE VIDEO</a><br />
+        DIY will save the world!<br>
+        (c) Alexander Galilov, 2019 <br>
+        <a href="mailto:alexander.galilov@gmail.com?subject=quail">EMAIL</a>
+    </div>
+</body>
+</html>
